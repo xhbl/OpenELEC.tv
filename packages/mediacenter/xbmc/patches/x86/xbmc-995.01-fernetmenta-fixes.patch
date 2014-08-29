@@ -4229,7 +4229,7 @@ index b91ed43..5d9e2fb 100644
 -
 -  m_dllAvCodec.avcodec_register_all();
 -
-   bool ac3 = CSettings::Get().GetBool("audiooutput.ac3passthrough");
+   bool ac3 = CSettings::Get().GetBool(!m_bAudio2 ? "audiooutput.ac3passthrough" : "audiooutput2.ac3passthrough");
  
    AVCodec *codec = NULL;
 @@ -119,7 +114,7 @@ bool CAEEncoderFFmpeg::Initialize(AEAudioFormat &format, bool allow_planar_input
