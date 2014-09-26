@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="dbus"
-PKG_VERSION="1.8.6"
+PKG_VERSION="1.8.8"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -47,9 +47,9 @@ PKG_CONFIGURE_OPTS_TARGET="export ac_cv_have_abstract_sockets=yes \
                            --disable-selinux \
                            --disable-libaudit \
                            --enable-systemd \
-                           --enable-dnotify \
                            --enable-inotify \
-                           --with-xml=expat \
+                           --without-dbus-glib \
+                           --without-valgrind \
                            --without-x \
                            --with-dbus-user=dbus"
 
