@@ -1,9 +1,23 @@
+# OpenELEC - Dual Audio Support
+
+A kodi dual audio patch created from [Kodi_dualaudio](https://github.com/xhbl/Kodi_dualaudio) project for OpenELEC.
+
+**Notes**
+
+* You can simply use this repository to build OpenELEC to get simultaneous dual audio output. or,
+* Go to packages/mediacenter/kodi/patches, just get the patch and copy to your original OpenELEC project.
+
+**About**
+
+* Any feedback or support for this project, Please send email to:
+  [newxhbl@hotmail.com](mailto:newxhbl@hotmail.com)
+
 [OpenELEC](http://www.openelec.tv)
 
 # OpenELEC - Open Embedded Linux Entertainment Center
 
-OpenELEC runs [XBMC](http://xbmc.org), an award-winning free and open source (GPL) software media 
-player and entertainment hub for digital media. For more info see http://xbmc.org .
+OpenELEC runs [Kodi](http://kodi.tv), an award-winning free and open source (GPL) software media 
+player and entertainment hub for digital media. For more info see http://kodi.tv .
 The base system has been designed and built from the ground up to be as 
 efficient as possible – consuming only tiny disk and memory footprints and
 providing cutting edge hardware support to deliver a set-top box experience.
@@ -48,12 +62,12 @@ providing cutting edge hardware support to deliver a set-top box experience.
 * Minimal hardware requirements
 * Ultra fast boot
 * Optimized builds for platforms such as ION, Intel, Fusion
-* Simple configuration via XBMC itself
+* Simple configuration via Kodi itself
 * Plug and Play external storage
 
 **Software**
 
-* XBMC HTPC software – View/Manage all your media.
+* Kodi HTPC software – View/Manage all your media.
 * Samba server – File transfer from any PC client
 * SSH server – Remote console access for debugging
 * IR/Bluetooth Remote Control
@@ -74,7 +88,7 @@ providing cutting edge hardware support to deliver a set-top box experience.
   next reboot.
 * Automatic mounting of filesystems is supported. Devices such as USB Flash 
   sticks can be plugged into a running machine and will be mounted to /media,
-  showing up in xbmc’s GUI.
+  showing up in kodi’s GUI.
 * Comments and questions are more than welcome, help is even better and patches 
   are absolutely perfect!!
 
