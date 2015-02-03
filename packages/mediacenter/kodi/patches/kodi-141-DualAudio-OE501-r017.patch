@@ -1,6 +1,6 @@
-From bc78e30feef2ae4a836814644357c829b157cd8d Mon Sep 17 00:00:00 2001
+From 0b7fafc36b054b7de29c4b41f4df5aa1fba96d83 Mon Sep 17 00:00:00 2001
 From: xhbl <newxhbl@hotmail.com>
-Date: Tue, 23 Dec 2014 18:25:15 +0800
+Date: Tue, 02 Feb 2015 16:08:08 +0800
 Subject: [PATCH] [DualAudio] Helix 2nd Audio Output supported
 
 ---
@@ -35,7 +35,7 @@ Subject: [PATCH] [DualAudio] Helix 2nd Audio Output supported
  xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.h   |   4 +-
  xbmc/cores/dvdplayer/DVDDemuxers/DVDDemuxUtils.cpp |  18 ++
  xbmc/cores/dvdplayer/DVDDemuxers/DVDDemuxUtils.h   |   1 +
- xbmc/cores/dvdplayer/DVDPlayerAudio.cpp            | 315 +++++++++++++++++++--
+ xbmc/cores/dvdplayer/DVDPlayerAudio.cpp            | 313 +++++++++++++++++++--
  xbmc/cores/dvdplayer/DVDPlayerAudio.h              |  39 ++-
  xbmc/cores/paplayer/AudioDecoder.cpp               |   8 +
  xbmc/cores/paplayer/AudioDecoder.h                 |   6 +
@@ -47,7 +47,7 @@ Subject: [PATCH] [DualAudio] Helix 2nd Audio Output supported
  xbmc/guilib/GUIAudioManager.h                      |  20 +-
  xbmc/settings/SettingConditions.cpp                |   1 +
  xbmc/settings/Settings.cpp                         |  24 ++
- 43 files changed, 1708 insertions(+), 181 deletions(-)
+ 43 files changed, 1707 insertions(+), 180 deletions(-)
 
 diff --git a/README.md b/README.md
 index 0e18dcf..655cb77 100644
@@ -461,20 +461,20 @@ index 5895062..5bda33b 100644
    </section>
  </settings>
 diff --git a/version.txt b/version.txt
-index d431b55..283fe9d 100644
+index 6eecc88..488ae53 100644
 --- a/version.txt
 +++ b/version.txt
 @@ -3,7 +3,7 @@ COMPANY_NAME XBMC-Foundation
  WEBSITE http://kodi.tv
  VERSION_MAJOR 14
- VERSION_MINOR 0
+ VERSION_MINOR 1
 -VERSION_TAG
 +VERSION_TAG DualAudio-r017
- VERSION_CODE 140000
- ADDON_API 14.0.000
+ VERSION_CODE 141000
+ ADDON_API 14.1.000
  
 diff --git a/xbmc/Application.cpp b/xbmc/Application.cpp
-index 7ee0a34..d88ad11 100644
+index 4a5619a..7fbf459 100644
 --- a/xbmc/Application.cpp
 +++ b/xbmc/Application.cpp
 @@ -833,6 +833,7 @@ bool CApplication::Create()
@@ -2151,7 +2151,7 @@ index 2c12df3..1b12334 100644
  };
  
 diff --git a/xbmc/cores/dvdplayer/DVDPlayerAudio.cpp b/xbmc/cores/dvdplayer/DVDPlayerAudio.cpp
-index f567518..df11f42 100644
+index c1a5b8d..df11f42 100644
 --- a/xbmc/cores/dvdplayer/DVDPlayerAudio.cpp
 +++ b/xbmc/cores/dvdplayer/DVDPlayerAudio.cpp
 @@ -85,28 +85,120 @@ double CPTSInputQueue::Get(int64_t bytes, bool consume)
@@ -2577,7 +2577,7 @@ index f567518..df11f42 100644
          m_stalled = true;
        }
  
-@@ -560,26 +743,50 @@ void CDVDPlayerAudio::Process()
+@@ -560,6 +743,23 @@ void CDVDPlayerAudio::Process()
  
        g_dataCacheCore.SignalAudioInfoChange();
      }
@@ -2601,9 +2601,8 @@ index f567518..df11f42 100644
  
      // Zero out the frame data if we are supposed to silence the audio
      if (m_silence)
-     {
--      int size = audioframe.nb_frames * audioframe.framesize * audioframe.channel_count / audioframe.planes;
-+      int size = audioframe.nb_frames * audioframe.framesize / audioframe.planes;
+@@ -567,19 +767,26 @@ void CDVDPlayerAudio::Process()
+       int size = audioframe.nb_frames * audioframe.framesize / audioframe.planes;
        for (unsigned int i=0; i<audioframe.planes; i++)
          memset(audioframe.data[i], 0, size);
 +      int size2 = audioframe2.nb_frames * audioframe2.framesize / audioframe2.planes;
