@@ -1,6 +1,6 @@
-From 0b7fafc36b054b7de29c4b41f4df5aa1fba96d83 Mon Sep 17 00:00:00 2001
+From 42eda9c77a1ea143a29a2c71d8204a9102f1799c Mon Sep 17 00:00:00 2001
 From: xhbl <newxhbl@hotmail.com>
-Date: Tue, 02 Feb 2015 16:08:08 +0800
+Date: Sun, 12 Apr 2015 14:44:38 +0800
 Subject: [PATCH] [DualAudio] Helix 2nd Audio Output supported
 
 ---
@@ -461,23 +461,23 @@ index 5895062..5bda33b 100644
    </section>
  </settings>
 diff --git a/version.txt b/version.txt
-index 6eecc88..488ae53 100644
+index ac49716..d19e915 100644
 --- a/version.txt
 +++ b/version.txt
 @@ -3,7 +3,7 @@ COMPANY_NAME XBMC-Foundation
  WEBSITE http://kodi.tv
  VERSION_MAJOR 14
- VERSION_MINOR 1
+ VERSION_MINOR 2
 -VERSION_TAG
 +VERSION_TAG DualAudio-r017
- VERSION_CODE 141000
- ADDON_API 14.1.000
+ VERSION_CODE 142000
+ ADDON_API 14.2.000
  
 diff --git a/xbmc/Application.cpp b/xbmc/Application.cpp
-index 4a5619a..7fbf459 100644
+index 5425322..be425c8 100644
 --- a/xbmc/Application.cpp
 +++ b/xbmc/Application.cpp
-@@ -833,6 +833,7 @@ bool CApplication::Create()
+@@ -838,6 +838,7 @@ bool CApplication::Create()
    SetHardwareVolume(m_volumeLevel);
    CAEFactory::SetMute     (m_muted);
    CAEFactory::SetSoundMode(CSettings::Get().GetInt("audiooutput.guisoundmode"));
@@ -485,7 +485,7 @@ index 4a5619a..7fbf459 100644
  
    // initialize m_replayGainSettings
    m_replayGainSettings.iType = CSettings::Get().GetInt("musicplayer.replaygaintype");
-@@ -1695,6 +1696,23 @@ void CApplication::OnSettingChanged(const CSetting *setting)
+@@ -1700,6 +1701,23 @@ void CApplication::OnSettingChanged(const CSetting *setting)
        CApplicationMessenger::Get().MediaRestart(false);
      }
    }
@@ -509,7 +509,7 @@ index 4a5619a..7fbf459 100644
    else if (StringUtils::EqualsNoCase(settingId, "musicplayer.replaygaintype"))
      m_replayGainSettings.iType = ((CSettingInt*)setting)->GetValue();
    else if (StringUtils::EqualsNoCase(settingId, "musicplayer.replaygainpreamp"))
-@@ -1758,6 +1776,25 @@ bool CApplication::OnSettingUpdate(CSetting* &setting, const char *oldSettingId,
+@@ -1763,6 +1781,25 @@ bool CApplication::OnSettingUpdate(CSetting* &setting, const char *oldSettingId,
        return ret;
      }
    }
@@ -535,7 +535,7 @@ index 4a5619a..7fbf459 100644
    else if (settingId == "screensaver.mode")
    {
      CSettingString *screensaverMode = (CSettingString*)setting;
-@@ -1806,7 +1843,7 @@ bool CApplication::OnSettingUpdate(CSetting* &setting, const char *oldSettingId,
+@@ -1811,7 +1848,7 @@ bool CApplication::OnSettingUpdate(CSetting* &setting, const char *oldSettingId,
    }
  #endif
  #if defined(TARGET_DARWIN_OSX)
@@ -1092,7 +1092,7 @@ index fe7bbbb..6bbc761 100644
    {
      m_CodecName = "DTS";
 diff --git a/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAE.cpp b/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAE.cpp
-index 6e9900f..788449e 100644
+index 248a655..5c8cdc2 100644
 --- a/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAE.cpp
 +++ b/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAE.cpp
 @@ -156,6 +156,11 @@ bool CEngineStats::IsSuspended()
