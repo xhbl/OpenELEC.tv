@@ -1,3 +1,17 @@
+# OpenELEC - Dual Audio Support
+
+A kodi dual audio patch created from [Kodi_dualaudio](https://github.com/xhbl/Kodi_dualaudio) project for OpenELEC.
+
+**Notes**
+
+* You can simply use this repository to build OpenELEC to get simultaneous dual audio output. or,
+* Go to packages/mediacenter/kodi/patches, just get the patch and copy to your original OpenELEC project.
+
+**About**
+
+* Any feedback or support for this project, Please send email to:
+  [newxhbl@hotmail.com](mailto:newxhbl@hotmail.com)
+
 [OpenELEC](http://www.openelec.tv)
 
 # OpenELEC - Open Embedded Linux Entertainment Center
